@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NewGameDialog from "@/components/NewGameDialog";
 import { Game } from "@/app/api/createGame";
 import { useMutation } from "@tanstack/react-query";
@@ -36,13 +36,31 @@ export default function Home() {
     mutate({ row, col });
   };
 
-  useEffect(() => {});
+  function getStatusMessage(status?: string) {
+    switch (status) {
+      case "X_WON":
+        return "X wins! 🎉";
+      case "O_WON":
+        return "O wins! 🎉";
+      case "DRAW":
+        return "It's a draw 🤝";
+      case "IN_PROGRESS":
+      default:
+        return null;
+    }
+  }
 
   return (
     <main className="text-slate-900 space-y-4">
       <div className="flex pt-10 flex-col gap-5 items-center justify-center w-full">
         <h1 className="text-3xl font-semibold">Welcome to the game!</h1>
-        <h2>{game?.status}</h2>
+
+        {game?.status && game.status !== "IN_PROGRESS" && (
+          <p className="text-lg font-medium text-red-600">
+            {getStatusMessage(game.status)}
+          </p>
+        )}
+
         <h2>Game ID : {game?.gameId}</h2>
 
         <NewGameDialog onCreated={setGame} />

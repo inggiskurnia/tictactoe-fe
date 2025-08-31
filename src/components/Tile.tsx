@@ -1,25 +1,33 @@
-"use client"
+"use client";
 
-import {FC, useState} from "react";
+import { FC, useEffect, useState } from "react";
 
-const Tile:FC = () => {
-    const [tileState, setTileState] = useState<string>("");
-    const [humanMark] = useState<string>("X");
+interface Props {
+  tileState: string;
+  humanMark: string;
+}
 
-    const handleOnClick = () => {
-        setTileState(humanMark);
-    };
+const Tile: FC<Props> = ({ tileState, humanMark }) => {
+  const [selected, setSelected] = useState<string>("");
 
-    return (
-        <button
-            className="aspect-square w-full rounded-md bg-gray-200 grid place-items-center"
-            onClick={handleOnClick}
-        >
-            <span className="text-8xl text-gray-700">{tileState}</span>
-        </button>
-    );
+  const handleOnClick = () => {
+    setSelected(humanMark);
+  };
+
+  useEffect(() => {
+    if (tileState) {
+      setSelected(tileState);
+    }
+  }, []);
+
+  return (
+    <button
+      className="aspect-square w-full rounded-md bg-gray-200 grid place-items-center"
+      onClick={handleOnClick}
+    >
+      <span className="text-[3.5cqw] text-gray-700">{selected}</span>
+    </button>
+  );
 };
 
-
 export default Tile;
-
